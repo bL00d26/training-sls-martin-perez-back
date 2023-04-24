@@ -1,0 +1,15 @@
+service: layers
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: us-east-1
+  profile: alegra-training
+
+layers:
+  logging:
+    path: logging-layer
+
+

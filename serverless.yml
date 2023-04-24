@@ -1,0 +1,21 @@
+service: training-sls-back
+# useDotEnv: true
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: us-east-1
+  profile: alegra-training
+
+functions:
+  hello:
+    handler: src/hello.handler
+  authorizer:
+    handler: src/authorizer.handler
+custom:
+  esbuild:
+    bundle: true
+    minify: true
+
+plugins:
+  - serverless-esbuild
+  - serverless-offline
