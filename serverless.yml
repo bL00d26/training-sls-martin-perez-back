@@ -9,6 +9,13 @@ provider:
 functions:
   hello:
     handler: src/hello.handler
+    layers:
+      - { Ref: SharedLambdaLayer }
+  create-foundation:
+    handler: src/create-foundation.handler
+    timeout: 15
+    layers:
+      - { Ref: SharedLambdaLayer }
   authorizer:
     handler: src/authorizer.handler
 custom:
@@ -16,6 +23,17 @@ custom:
     bundle: true
     minify: true
 
+layers:
+  Shared:
+    path: dist/layer 
+    name: shared-layer
+    retain: false
+    package:
+      patterns:
+        - "!./package.json"
+        - "!./package-lock.json"
+
 plugins:
   - serverless-esbuild
   - serverless-offline
+  - serverless-latest-layer-version
