@@ -1,6 +1,6 @@
 import { EntityTarget, ObjectLiteral } from 'typeorm';
 
-import { Database } from '/opt/nodejs/services/database';
+import { Database } from '/opt/nodejs/database/database';
 
 interface IBaseModelOperation {
   Model: EntityTarget<ObjectLiteral>;
@@ -31,9 +31,20 @@ export class BaseModel {
   static async findOneBy({ Model, where }: IBaseModelOperation) {
     return await Database.dataSource.getRepository(Model).findOneBy(where);
   }
+  static async delete({ Model, where }: IBaseModelOperation) {
+    return await Database.dataSource.getRepository(Model).delete(where);
+  }
 
   static async saveOne({ Model, data }: IBaseModelOperation) {
     return await Database.dataSource.getRepository(Model).save(data);
+  }
+
+  static async findMany({ Model, where }: IBaseModelOperation) {
+    return await Database.dataSource.getRepository(Model).find(where);
+  }
+
+  static async updateById({ Model, where, data }: IBaseModelOperation) {
+    return await Database.dataSource.getRepository(Model).update(where, data);
   }
 
   static async createOne({ Model, data }: IBaseModelOperation) {

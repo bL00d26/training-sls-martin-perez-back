@@ -1,12 +1,13 @@
 {
   "name": "training-sls-martin-perez-back",
   "version": "1.0.0",
-  "description": "",
+  "description": "alegra serverless training",
   "main": "index.js",
   "scripts": {
-    "dev": "serverless offline",
-    "deploy": "serverless deploy",
-    "build:layer": "tsc"
+    "off": "serverless offline",
+    "deploy": "npm run build:layer && serverless deploy",
+    "build:layer": "rm -rf dist && tsc",
+    "dev":"npm run build:layer && npm run off"
   },
   "keywords": [],
   "author": "",

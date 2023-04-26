@@ -6,18 +6,71 @@ provider:
   region: us-east-1
   profile: alegra-training
 
+# TODO: REMOVE HTTP API EVENT BEFORE DEPLOY
+
 functions:
-  hello:
-    handler: src/hello.handler
-    layers:
-      - { Ref: SharedLambdaLayer }
-  create-foundation:
-    handler: src/create-foundation.handler
-    timeout: 15
-    layers:
-      - { Ref: SharedLambdaLayer }
   authorizer:
     handler: src/authorizer.handler
+  create-foundation:
+    handler: src/create-foundation.handler
+    events:
+      - httpApi: 
+          method: POST
+          path: /foundation
+    layers:
+      - { Ref: SharedLambdaLayer }
+  create-pet:
+    handler: src/create-pet.handler
+    events:
+      - httpApi: 
+          method: POST
+          path: /pet
+    layers:
+      - { Ref: SharedLambdaLayer }
+  delete-pet:
+    handler: src/delete-pet.handler
+    events:
+      - httpApi: 
+          method: DELETE
+          path: /pet/{petId}
+    layers:
+      - { Ref: SharedLambdaLayer }
+  filter-pets:
+    handler: src/filter-pets.handler
+    events:
+      - httpApi: 
+          method: POST
+          path: /pets/{foundationId}
+    layers:
+      - { Ref: SharedLambdaLayer }
+  get-pet-id:
+    handler: src/get-pet-id.handler
+    events:
+      - httpApi: 
+          method: GET 
+          path: /pet/{petId}
+    layers:
+      - { Ref: SharedLambdaLayer }
+  get-pets:
+    handler: src/get-pets.handler
+    events:
+      - httpApi: 
+          method: GET 
+          path: /pets/{foundationId}
+    layers:
+      - { Ref: SharedLambdaLayer }
+  sync-db:
+    handler: src/sync-db.handler
+    layers:
+      - { Ref: SharedLambdaLayer }
+  update-pet:
+    handler: src/update-pet.handler
+    events:
+      - httpApi: 
+          method: PUT 
+          path: /pet/{petId}
+    layers:
+      - { Ref: SharedLambdaLayer }
 custom:
   esbuild:
     bundle: true

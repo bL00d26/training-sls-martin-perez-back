@@ -9,9 +9,15 @@ export class Foundation {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('varchar')
+  @Column('varchar', {
+    unique: true,
+    nullable: false
+  })
   name: string;
 
-  @Column('varchar')
-  owner: number;
+  @Column('varchar', {
+    unique: true,
+    nullable: false
+  })
+  owner: string;
 }

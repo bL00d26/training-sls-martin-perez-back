@@ -5,13 +5,9 @@ export const handler: Handler = async (event: APIGatewayProxyEventV2) => {
     await FoundationService.connectionDB();
     await FoundationService.synchronize();
     const message = 'Db synchronized';
-    return { statusCode: 200, body: JSON.stringify(message) };
+    return { statusCode: 200, body: JSON.stringify({ message }) };
   } catch (error) {
-    console.error(error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify(error)
-    };
+    throw error;
   } finally {
     await FoundationService.closeDB();
   }
