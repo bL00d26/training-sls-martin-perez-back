@@ -5,11 +5,11 @@ provider:
   runtime: nodejs14.x
   region: us-east-1
   profile: alegra-training
-
-# TODO: REMOVE HTTP API EVENT BEFORE DEPLOY
-
+  httpApi:
+    id:
+      Fn::ImportValue: pets-api-id
 functions:
-  authorizer:
+  authorizerFunc:
     handler: src/authorizer.handler
   create-foundation:
     handler: src/create-foundation.handler
@@ -61,6 +61,10 @@ functions:
       - { Ref: SharedLambdaLayer }
   sync-db:
     handler: src/sync-db.handler
+    events:
+      - httpApi: 
+          method: GET 
+          path: /sync
     layers:
       - { Ref: SharedLambdaLayer }
   update-pet:
