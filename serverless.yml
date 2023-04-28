@@ -29,6 +29,10 @@ functions:
       - httpApi: 
           method: POST
           path: /pet
+          # authorizer:
+          #   id:
+          #     Fn::ImportValue: api-authorizer-id
+          #   type: request
     layers:
       - { Ref: SharedLambdaLayer }
   delete-pet:

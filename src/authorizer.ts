@@ -8,6 +8,7 @@ export const handler: Handler = async (
   event: APIGatewayRequestAuthorizerEventV2
 ) => {
   const token = event.headers.Authorization;
+
   try {
     const isAuthenticated = await authenticateToken(token);
 
@@ -29,6 +30,6 @@ export const handler: Handler = async (
       }
     };
   } catch (error) {
-    throw new Error('Unauthorized');
+    throw error;
   }
 };

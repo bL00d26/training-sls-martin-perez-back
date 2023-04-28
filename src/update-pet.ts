@@ -30,6 +30,9 @@ export const handler: Handler = async (event: APIGatewayProxyEventV2) => {
       { id: Number(id), foundationId: Number(foundationId) },
       updateParameters
     );
+    if (!pet) {
+      throw new Error('Pet not found');
+    }
     const { status = '' } = updateParameters;
     if (status === 'happy') {
       const sns = new SNS({

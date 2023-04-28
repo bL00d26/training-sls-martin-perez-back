@@ -8,8 +8,19 @@ export const handler: Handler = async (event: APIGatewayProxyEventV2) => {
       throw new Error('Missing id parameter');
     }
     await PetService.connectionDB();
-    const pet = await PetService.deleteById(id, foundationId);
-    return { statusCode: 200, body: JSON.stringify({ pet }) };
+    const { affected = 0 } = await PetService.deleteById(id, foundationId);
+    if (affected) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ message: 'Pet deleted' })
+      };
+    }
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: 'There was no pet with that id in your foundation'
+      })
+    };
   } catch (error) {
     throw error;
   } finally {

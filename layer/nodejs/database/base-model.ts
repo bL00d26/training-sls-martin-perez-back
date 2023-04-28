@@ -40,7 +40,7 @@ export class BaseModel {
   }
 
   static async findMany({ Model, where }: IBaseModelOperation) {
-    return await Database.dataSource.getRepository(Model).find(where);
+    return await Database.dataSource.getRepository(Model).findBy(where);
   }
 
   static async updateById({ Model, where, data }: IBaseModelOperation) {
