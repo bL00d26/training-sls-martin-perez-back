@@ -1,24 +1,13 @@
-import {
-  APIGatewayAuthorizerEvent,
-  CustomAuthorizerResult,
-  APIGatewayAuthorizerHandler,
-  APIGatewayTokenAuthorizerEvent
-} from 'aws-lambda';
+import { Handler, APIGatewayRequestAuthorizerEventV2 } from 'aws-lambda';
 
 const authenticateToken = async (token: string): Promise<boolean> => {
   return token === 'test';
 };
 
-export const handler: APIGatewayAuthorizerHandler = async (
-  event: APIGatewayAuthorizerEvent
-): Promise<CustomAuthorizerResult> => {
-  if ('type' in event && event.type !== 'TOKEN') {
-    throw new Error('Invalid event type');
-  }
-
-  const tokenEvent = event as APIGatewayTokenAuthorizerEvent;
-  const token = tokenEvent.authorizationToken;
-
+export const handler: Handler = async (
+  event: APIGatewayRequestAuthorizerEventV2
+) => {
+  const token = event.headers.Authorization;
   try {
     const isAuthenticated = await authenticateToken(token);
 
@@ -34,7 +23,7 @@ export const handler: APIGatewayAuthorizerHandler = async (
           {
             Action: 'execute-api:Invoke',
             Effect: 'Allow',
-            Resource: tokenEvent.methodArn
+            Resource: event.routeArn
           }
         ]
       }

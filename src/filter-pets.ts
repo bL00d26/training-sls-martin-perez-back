@@ -1,17 +1,19 @@
 import { Handler, APIGatewayProxyEventV2 } from 'aws-lambda';
 import { PetService } from '/opt/nodejs/services/pet-service';
+import { parseBody } from '/opt/nodejs/utils/parse-body';
+import { saveBodyS3 } from '/opt/nodejs/utils/save-body-s3';
 export const handler: Handler = async (event: APIGatewayProxyEventV2) => {
   try {
-    const id = event.pathParameters?.foundationId;
-    const { body } = event;
-    if (!id) {
+    const foundationId = Number(event.pathParameters?.foundationId);
+    if (!foundationId) {
       throw new Error('Missing id parameter');
     }
+    await saveBodyS3(event);
     await PetService.connectionDB();
-    const parsedBody = typeof body === 'string' ? JSON.parse(body) : body;
+    const filterParameters = parseBody(event);
     const data = {
-      ...parsedBody,
-      foundationId: Number(id)
+      ...filterParameters,
+      foundationId
     };
     const pets = await PetService.filterPets(data);
     return { statusCode: 200, body: JSON.stringify({ pets }) };

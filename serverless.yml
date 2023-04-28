@@ -1,5 +1,4 @@
 service: training-sls-back
-# useDotEnv: true
 provider:
   name: aws
   runtime: nodejs14.x
@@ -8,6 +7,11 @@ provider:
   httpApi:
     id:
       Fn::ImportValue: pets-api-id
+    disableDefaultEndpoint: true
+  iam:
+    role:
+      Fn::ImportValue: lambda-s3-sns-role-arn
+
 functions:
   authorizerFunc:
     handler: src/authorizer.handler
@@ -79,7 +83,6 @@ custom:
   esbuild:
     bundle: true
     minify: true
-
 layers:
   Shared:
     path: dist/layer 

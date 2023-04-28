@@ -7,7 +7,7 @@
     "off": "serverless offline",
     "deploy": "npm run build:layer && serverless deploy",
     "build:layer": "rm -rf dist && tsc",
-    "dev":"npm run build:layer && npm run off"
+    "dev": "npm run build:layer && npm run off"
   },
   "keywords": [],
   "author": "",

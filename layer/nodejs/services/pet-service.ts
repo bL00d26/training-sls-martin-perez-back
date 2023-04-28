@@ -19,11 +19,12 @@ export class PetService extends BaseModel {
     { id, foundationId }: { id: number; foundationId: number },
     data: any
   ) {
-    return await this.updateById({
+    await this.updateById({
       Model: this.Model,
       where: { id, foundationId },
       data
     });
+    return await this.findById(id, foundationId);
   }
 
   static async findByFoundationId(id: number) {
@@ -41,7 +42,10 @@ export class PetService extends BaseModel {
     return await this.findOneBy({ Model: this.Model, where });
   }
 
-  static async deleteById(id: number) {
-    return await this.delete({ Model: this.Model, where: { id } });
+  static async deleteById(id: number, foundationId: number) {
+    return await this.delete({
+      Model: this.Model,
+      where: { id, foundationId }
+    });
   }
 }

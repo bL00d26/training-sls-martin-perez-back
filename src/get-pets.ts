@@ -2,12 +2,12 @@ import { Handler, APIGatewayProxyEventV2 } from 'aws-lambda';
 import { PetService } from '/opt/nodejs/services/pet-service';
 export const handler: Handler = async (event: APIGatewayProxyEventV2) => {
   try {
-    const id = event.pathParameters?.foundationId;
+    const id = Number(event.pathParameters?.foundationId);
     if (!id) {
       throw new Error('Missing id parameter');
     }
     await PetService.connectionDB();
-    const pets = await PetService.findByFoundationId(Number(id));
+    const pets = await PetService.findByFoundationId(id);
     return { statusCode: 200, body: JSON.stringify({ pets }) };
   } catch (error) {
     throw error;
