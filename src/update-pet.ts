@@ -2,6 +2,10 @@ import { Handler, APIGatewayProxyEventV2 } from 'aws-lambda';
 import { SNS } from 'aws-sdk';
 import { ObjectLiteral } from '/opt/nodejs/node_modules/typeorm';
 import { PetService } from '/opt/nodejs/services/pet-service';
+import {
+  formatErrorResponse,
+  formatSuccessfulResponse
+} from '/opt/nodejs/utils/format-responses';
 import { parseBody } from '/opt/nodejs/utils/parse-body';
 import { saveBodyS3 } from '/opt/nodejs/utils/save-body-s3';
 
@@ -45,9 +49,9 @@ export const handler: Handler = async (event: APIGatewayProxyEventV2) => {
         })
         .promise();
     }
-    return { statusCode: 200, body: JSON.stringify({ pet }) };
+    return formatSuccessfulResponse({ pet });
   } catch (error) {
-    throw error;
+    return formatErrorResponse(error);
   } finally {
     await PetService.closeDB();
   }

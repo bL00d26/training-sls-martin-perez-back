@@ -3,7 +3,7 @@ provider:
   name: aws
   runtime: nodejs14.x
   region: us-east-1
-  profile: alegra-training
+  profile: training
   httpApi:
     id:
       Fn::ImportValue: pets-api-id
@@ -21,6 +21,10 @@ functions:
       - httpApi: 
           method: POST
           path: /foundation
+          # authorizer:
+          #   id:
+          #     Fn::ImportValue: api-authorizer-id
+          #   type: request
     layers:
       - { Ref: SharedLambdaLayer }
   create-pet:
@@ -29,10 +33,6 @@ functions:
       - httpApi: 
           method: POST
           path: /pet
-          # authorizer:
-          #   id:
-          #     Fn::ImportValue: api-authorizer-id
-          #   type: request
     layers:
       - { Ref: SharedLambdaLayer }
   delete-pet:

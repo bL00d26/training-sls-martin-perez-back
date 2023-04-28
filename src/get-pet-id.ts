@@ -1,5 +1,9 @@
 import { Handler, APIGatewayProxyEventV2 } from 'aws-lambda';
 import { PetService } from '/opt/nodejs/services/pet-service';
+import {
+  formatErrorResponse,
+  formatSuccessfulResponse
+} from '/opt/nodejs/utils/format-responses';
 export const handler: Handler = async (event: APIGatewayProxyEventV2) => {
   try {
     const id = Number(event.pathParameters?.petId);
@@ -12,9 +16,9 @@ export const handler: Handler = async (event: APIGatewayProxyEventV2) => {
     }
     await PetService.connectionDB();
     const pet = await PetService.findById(id, foundationId);
-    return { statusCode: 200, body: JSON.stringify({ pet }) };
+    return formatSuccessfulResponse({ pet });
   } catch (error) {
-    throw error;
+    return formatErrorResponse(error);
   } finally {
     await PetService.closeDB();
   }

@@ -1,5 +1,5 @@
 import { Handler, APIGatewayRequestAuthorizerEventV2 } from 'aws-lambda';
-
+import { formatErrorResponse } from '/opt/nodejs/utils/format-responses';
 const authenticateToken = async (token: string): Promise<boolean> => {
   return token === 'test';
 };
@@ -30,6 +30,6 @@ export const handler: Handler = async (
       }
     };
   } catch (error) {
-    throw error;
+    return formatErrorResponse(error);
   }
 };
