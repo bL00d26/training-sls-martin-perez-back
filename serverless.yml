@@ -21,10 +21,10 @@ functions:
       - httpApi: 
           method: POST
           path: /foundation
-          # authorizer:
-          #   id:
-          #     Fn::ImportValue: api-authorizer-id
-          #   type: request
+          authorizer:
+            id:
+              Fn::ImportValue: api-authorizer-id
+            type: request
     layers:
       - { Ref: SharedLambdaLayer }
   create-pet:
@@ -33,6 +33,10 @@ functions:
       - httpApi: 
           method: POST
           path: /pet
+          authorizer:
+            id:
+              Fn::ImportValue: api-authorizer-id
+            type: request
     layers:
       - { Ref: SharedLambdaLayer }
   delete-pet:
@@ -41,6 +45,10 @@ functions:
       - httpApi: 
           method: DELETE
           path: /pet/{petId}
+          authorizer:
+            id:
+              Fn::ImportValue: api-authorizer-id
+            type: request
     layers:
       - { Ref: SharedLambdaLayer }
   filter-pets:
@@ -49,6 +57,10 @@ functions:
       - httpApi: 
           method: POST
           path: /pets/{foundationId}
+          authorizer:
+            id:
+              Fn::ImportValue: api-authorizer-id
+            type: request
     layers:
       - { Ref: SharedLambdaLayer }
   get-pet-id:
@@ -57,6 +69,10 @@ functions:
       - httpApi: 
           method: GET 
           path: /pet/{petId}
+          authorizer:
+            id:
+              Fn::ImportValue: api-authorizer-id
+            type: request
     layers:
       - { Ref: SharedLambdaLayer }
   get-pets:
@@ -65,6 +81,10 @@ functions:
       - httpApi: 
           method: GET 
           path: /pets/{foundationId}
+          authorizer:
+            id:
+              Fn::ImportValue: api-authorizer-id
+            type: request
     layers:
       - { Ref: SharedLambdaLayer }
   sync-db:
@@ -73,6 +93,10 @@ functions:
       - httpApi: 
           method: GET 
           path: /sync
+          authorizer:
+            id:
+              Fn::ImportValue: api-authorizer-id
+            type: request
     layers:
       - { Ref: SharedLambdaLayer }
   update-pet:
@@ -81,12 +105,19 @@ functions:
       - httpApi: 
           method: PUT 
           path: /pet/{petId}
+          authorizer:
+            id:
+              Fn::ImportValue: api-authorizer-id
+            type: request
     layers:
       - { Ref: SharedLambdaLayer }
 custom:
   esbuild:
     bundle: true
     minify: true
+  openapi:
+    format: 'yaml'
+    file: './openapi.yaml'
 layers:
   Shared:
     path: dist/layer 
@@ -101,3 +132,4 @@ plugins:
   - serverless-esbuild
   - serverless-offline
   - serverless-latest-layer-version
+  - serverless-openapi-documentation

@@ -7,8 +7,7 @@ const authenticateToken = async (token: string): Promise<boolean> => {
 export const handler: Handler = async (
   event: APIGatewayRequestAuthorizerEventV2
 ) => {
-  const token = event.headers.Authorization;
-
+  const token = event.headers.authorization;
   try {
     const isAuthenticated = await authenticateToken(token);
 
@@ -30,6 +29,7 @@ export const handler: Handler = async (
       }
     };
   } catch (error) {
+    console.log({ error });
     return formatErrorResponse(error);
   }
 };

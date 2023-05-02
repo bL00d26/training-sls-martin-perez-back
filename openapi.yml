@@ -1,0 +1,130 @@
+openapi: 3.0.0
+info:
+  title: Training SLS API
+  version: 1.0.0
+servers:
+  - url: https://{pets-api-id}.execute-api.us-east-1.amazonaws.com
+paths:
+  /foundation:
+    post:
+      summary: Create a new foundation
+      operationId: createFoundation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Foundation created successfully
+  /pet:
+    post:
+      summary: Create a new pet
+      operationId: createPet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Pet created successfully
+  /pet/{petId}:
+    delete:
+      summary: Delete a pet by ID
+      operationId: deletePet
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Pet deleted successfully
+    get:
+      summary: Get a pet by ID
+      operationId: getPetById
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Pet retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      summary: Update a pet by ID
+      operationId: updatePet
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Pet updated successfully
+  /pets/{foundationId}:
+    post:
+      summary: Filter pets by foundation ID
+      operationId: filterPets
+      parameters:
+        - name: foundationId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Pets filtered successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+    get:
+      summary: Get pets by foundation ID
+      operationId: getPets
+      parameters:
+        - name: foundationId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Pets retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+  /sync:
+    get:
+      summary: Sync database
+      operationId: syncDb
+      responses:
+        '200':
+          description: Database synced successfully
