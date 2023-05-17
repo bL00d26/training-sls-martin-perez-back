@@ -12,7 +12,7 @@ export const handler: Handler = async (
     const isAuthenticated = await authenticateToken(token);
 
     if (!isAuthenticated) {
-      throw new Error('Unauthorized for user');
+      throw new Error('Unauthorized for use');
     }
 
     return {
