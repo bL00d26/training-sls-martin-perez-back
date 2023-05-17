@@ -12,7 +12,7 @@ export const handler: Handler = async (event: APIGatewayProxyEventV2) => {
       throw new Error('Missing id parameter');
     }
     if (!foundationId) {
-      throw new Error('Missing foundationId in query string');
+      throw new Error('Missing foundationId in query stringggg');
     }
     await PetService.connectionDB();
     const pet = await PetService.findById(id, foundationId);
